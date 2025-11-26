@@ -1,0 +1,9 @@
+com\fixsy\gestionsolicitudes\GestionsolicitudesApplication.class
+com\fixsy\gestionsolicitudes\config\SwaggerConfig.class
+com\fixsy\gestionsolicitudes\model\ServiceRequest.class
+com\fixsy\gestionsolicitudes\controller\ServiceRequestController.class
+com\fixsy\gestionsolicitudes\services\ServiceRequestService.class
+com\fixsy\gestionsolicitudes\webclient\UsuarioClient.class
+com\fixsy\gestionsolicitudes\dto\ServiceRequestDTO.class
+com\fixsy\gestionsolicitudes\dto\ServiceRequestRequestDTO.class
+com\fixsy\gestionsolicitudes\repository\ServiceRequestRepository.class

@@ -1,0 +1,8 @@
+com\fixsy\vehiculos\model\Vehicle.class
+com\fixsy\vehiculos\repository\VehicleRepository.class
+com\fixsy\vehiculos\VehiculosApplication.class
+com\fixsy\vehiculos\config\SwaggerConfig.class
+com\fixsy\vehiculos\service\VehicleService.class
+com\fixsy\vehiculos\controller\VehicleController.class
+com\fixsy\vehiculos\dto\VehicleRequestDTO.class
+com\fixsy\vehiculos\dto\VehicleDTO.class
