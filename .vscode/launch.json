@@ -1,0 +1,44 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-GestionsolicitudesApplication<gestionsolicitudes>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.fixsy.gestionsolicitudes.GestionsolicitudesApplication",
+            "projectName": "gestionsolicitudes",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-ImagenesApplication<imagenes>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.fixsy.imagenes.ImagenesApplication",
+            "projectName": "imagenes",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-UsuariosApplication<usuarios>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.fixsy.usuarios.UsuariosApplication",
+            "projectName": "usuarios",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "type": "java",
+            "name": "Spring Boot-VehiculosApplication<vehiculos>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.fixsy.vehiculos.VehiculosApplication",
+            "projectName": "vehiculos",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}
