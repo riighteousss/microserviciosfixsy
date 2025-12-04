@@ -29,8 +29,16 @@ public class User {
     @Column(nullable = false)
     private String phone;
 
-    @Column(nullable = false)
-    private String role; // CLIENT, MECHANIC, ADMIN
+    // Relación con la tabla de roles normalizada
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "role_id", nullable = false)
+    private Role role;
+
+    @Column(name = "reset_token")
+    private String resetToken;
+
+    @Column(name = "reset_token_expiry")
+    private LocalDateTime resetTokenExpiry;
 
     @Column(name = "created_at")
     private LocalDateTime createdAt;
@@ -48,5 +56,9 @@ public class User {
     protected void onUpdate() {
         updatedAt = LocalDateTime.now();
     }
-}
 
+    // Método de conveniencia para obtener el nombre del rol como String
+    public String getRoleName() {
+        return role != null ? role.getName().name() : null;
+    }
+}

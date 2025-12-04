@@ -13,15 +13,15 @@ import lombok.NoArgsConstructor;
 @Schema(description = "DTO para crear o actualizar una solicitud de servicio")
 public class ServiceRequestRequestDTO {
     @NotNull(message = "El ID de usuario es obligatorio")
-    @Schema(description = "ID del usuario que crea la solicitud", example = "1", required = true)
+    @Schema(description = "ID del usuario que crea la solicitud", example = "1", requiredMode = Schema.RequiredMode.REQUIRED)
     private Long userId;
 
     @NotBlank(message = "El tipo de servicio es obligatorio")
-    @Schema(description = "Tipo de servicio", example = "Mantenimiento", required = true)
+    @Schema(description = "Tipo de servicio", example = "Mantenimiento", requiredMode = Schema.RequiredMode.REQUIRED)
     private String serviceType;
 
     @NotBlank(message = "La información del vehículo es obligatoria")
-    @Schema(description = "Información del vehículo", example = "Toyota Corolla 2020", required = true)
+    @Schema(description = "Información del vehículo", example = "Toyota Corolla 2020", requiredMode = Schema.RequiredMode.REQUIRED)
     private String vehicleInfo;
 
     @Schema(description = "Descripción del problema", example = "El vehículo no enciende")

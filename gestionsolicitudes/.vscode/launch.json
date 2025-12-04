@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Spring Boot-GestionsolicitudesApplication<gestionsolicitudes>",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "com.fixsy.gestionsolicitudes.GestionsolicitudesApplication",
+            "projectName": "gestionsolicitudes",
+            "args": "",
+            "envFile": "${workspaceFolder}/.env"
+        }
+    ]
+}

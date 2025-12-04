@@ -5,14 +5,23 @@ Este directorio contiene los microservicios del sistema Fixsy desarrollados con 
 ## Microservicios
 
 ### 1. Usuarios Service (Puerto 8081)
-- **Descripción**: Gestión de usuarios del sistema
+- **Descripción**: Gestión de usuarios del sistema con roles normalizados y contraseñas encriptadas
 - **Base de datos**: `fixsy_usuarios`
+- **Características**:
+  - ✅ Tabla de roles normalizada (CLIENT, MECHANIC, ADMIN)
+  - ✅ Contraseñas encriptadas con BCrypt
+  - ✅ Recuperación de contraseña con tokens
+  - ✅ Login con verificación de credenciales
 - **Endpoints principales**:
   - GET `/api/users` - Obtener todos los usuarios
   - GET `/api/users/{id}` - Obtener usuario por ID
+  - GET `/api/users/email/{email}` - Obtener usuario por email
   - POST `/api/users` - Crear nuevo usuario
   - PUT `/api/users/{id}` - Actualizar usuario
   - DELETE `/api/users/{id}` - Eliminar usuario
+  - POST `/api/users/login` - Iniciar sesión
+  - POST `/api/users/forgot-password` - Solicitar recuperación de contraseña
+  - POST `/api/users/reset-password` - Restablecer contraseña
 
 ### 2. Gestión Solicitudes Service (Puerto 8082)
 - **Descripción**: Gestión de solicitudes de servicio
@@ -20,37 +29,45 @@ Este directorio contiene los microservicios del sistema Fixsy desarrollados con 
 - **Endpoints principales**:
   - GET `/api/requests` - Obtener todas las solicitudes
   - GET `/api/requests/user/{userId}` - Obtener solicitudes por usuario
+  - GET `/api/requests/mechanic/{mechanicName}` - Obtener solicitudes por mecánico
+  - GET `/api/requests/status/{status}` - Obtener solicitudes por estado
   - POST `/api/requests` - Crear nueva solicitud
+  - PUT `/api/requests/{id}` - Actualizar solicitud completa
   - PUT `/api/requests/{id}/status` - Actualizar estado
   - PUT `/api/requests/{id}/assign` - Asignar mecánico
+  - DELETE `/api/requests/{id}` - Eliminar solicitud
 
-### 3. Notificaciones Service (Puerto 8083)
-- **Descripción**: Gestión de notificaciones
-- **Base de datos**: `fixsy_notificaciones`
-- **Endpoints principales**:
-  - GET `/api/notifications/user/{userId}` - Obtener notificaciones por usuario
-  - POST `/api/notifications` - Crear notificación
-  - PUT `/api/notifications/{id}/read` - Marcar como leída
-
-### 4. Media Service (Puerto 8084)
-- **Descripción**: Gestión de archivos e imágenes
-- **Base de datos**: `fixsy_media`
-- **Endpoints principales**:
-  - POST `/api/media/upload` - Subir archivo
-  - GET `/api/media/files/{id}/download` - Descargar archivo
-  - DELETE `/api/media/files/{id}` - Eliminar archivo
-
-### 5. Vehículos Service (Puerto 8085) ✨ NUEVO
+### 3. Vehículos Service (Puerto 8083)
 - **Descripción**: Gestión de vehículos de usuarios
 - **Base de datos**: `fixsy_vehiculos`
 - **Endpoints principales**:
   - GET `/api/vehicles` - Obtener todos los vehículos
+  - GET `/api/vehicles/{id}` - Obtener vehículo por ID
   - GET `/api/vehicles/user/{userId}` - Obtener vehículos por usuario
   - GET `/api/vehicles/user/{userId}/default` - Obtener vehículo predeterminado
+  - GET `/api/vehicles/user/{userId}/count` - Obtener cantidad de vehículos
   - POST `/api/vehicles` - Crear nuevo vehículo
   - PUT `/api/vehicles/{id}` - Actualizar vehículo
   - PUT `/api/vehicles/{id}/set-default` - Establecer como predeterminado
   - DELETE `/api/vehicles/{id}` - Eliminar vehículo
+
+### 4. Imágenes Service (Puerto 8084) ✨ NUEVO
+- **Descripción**: Gestión de imágenes del sistema
+- **Base de datos**: `fixsy_imagenes`
+- **Características**:
+  - ✅ Almacenamiento en BD (LONGBLOB) y sistema de archivos
+  - ✅ Soporte para upload multipart y Base64
+  - ✅ Asociación con entidades (USER, VEHICLE, SERVICE_REQUEST)
+- **Endpoints principales**:
+  - GET `/api/images` - Obtener todas las imágenes
+  - GET `/api/images/{id}` - Obtener info de imagen
+  - GET `/api/images/{id}/download` - Descargar imagen (binario)
+  - GET `/api/images/user/{userId}` - Obtener imágenes por usuario
+  - GET `/api/images/entity/{entityType}/{entityId}` - Obtener imágenes por entidad
+  - POST `/api/images` - Subir imagen (multipart)
+  - POST `/api/images/base64` - Subir imagen en Base64
+  - DELETE `/api/images/{id}` - Eliminar imagen
+  - DELETE `/api/images/entity/{entityType}/{entityId}` - Eliminar imágenes de entidad
 
 ## Configuración
 
@@ -69,9 +86,8 @@ Cada microservicio crea automáticamente su base de datos si no existe. Asegúra
 Cada microservicio incluye Swagger UI disponible en:
 - Usuarios: http://localhost:8081/swagger-ui.html
 - Solicitudes: http://localhost:8082/swagger-ui.html
-- Notificaciones: http://localhost:8083/swagger-ui.html
-- Media: http://localhost:8084/swagger-ui.html
-- Vehículos: http://localhost:8085/swagger-ui.html
+- Vehículos: http://localhost:8083/swagger-ui.html
+- Imágenes: http://localhost:8084/swagger-ui.html
 
 ## Ejecución
 
@@ -84,9 +100,23 @@ mvn spring-boot:run
 
 Repite el proceso para cada microservicio en su respectiva carpeta.
 
+## Tests
+
+Cada microservicio incluye tests unitarios. Para ejecutarlos:
+
+```bash
+cd usuarios
+mvn test
+```
+
+Los tests cubren:
+- Servicios (UserService, VehicleService, etc.)
+- Controladores
+- Validaciones
+
 ## Estructura de Proyecto
 
-Cada microservicio sigue la siguiente estructura (igual al repositorio original, sin HATEOAS):
+Cada microservicio sigue la siguiente estructura:
 
 ```
 microservicio/
@@ -98,57 +128,51 @@ microservicio/
 │   │   │       └── [microservicio]/
 │   │   │           ├── [Microservicio]Application.java
 │   │   │           ├── controller/
-│   │   │           ├── services/ (o service/)
+│   │   │           ├── service/ (o services/)
 │   │   │           ├── repository/
 │   │   │           ├── model/
 │   │   │           ├── dto/
 │   │   │           ├── config/
-│   │   │           └── webclient/ (para comunicación entre microservicios)
+│   │   │           └── exception/
 │   │   └── resources/
 │   │       └── application.properties
 │   └── test/
 │       └── java/
 │           └── com/fixsy/
 │               └── [microservicio]/
-│                   └── [Microservicio]ApplicationTests.java
+│                   ├── [Microservicio]ApplicationTests.java
+│                   ├── service/
+│                   │   └── [Entity]ServiceTest.java
+│                   └── controller/
+│                       └── [Entity]ControllerTest.java
 ```
 
-## Notas
+## Características Implementadas
 
-- Los microservicios siguen la misma estructura del repositorio original `proyecto_semestral`
-- **Sin HATEOAS**: A diferencia del repositorio original, estos microservicios NO incluyen HATEOAS
-- Todos incluyen Swagger para documentación de API
-- `gestionsolicitudes` incluye `webclient` para comunicación con otros microservicios
-- **Modelo alineado**: El modelo `ServiceRequest` está alineado con `RequestHistoryEntity` de la app Android
-- Las contraseñas se almacenan en texto plano (implementar hashing en producción)
-- Los archivos se almacenan localmente en la carpeta `uploads` del servicio de media
-- Usa `MySQL8Dialect` en lugar de `MySQLDialect`
-- Java 21 y Spring Boot 3.4.6
+### Seguridad
+- ✅ Contraseñas encriptadas con BCrypt
+- ✅ Tabla de roles normalizada
+- ✅ Recuperación de contraseña con tokens temporales (24h)
 
-## Microservicios y su Relación con la App
+### Documentación
+- ✅ Swagger/OpenAPI completo con códigos de respuesta
+- ✅ Códigos HTTP apropiados (200, 201, 400, 401, 404, 409, 500)
+- ✅ Descripciones detalladas en endpoints
 
-### ✅ usuarios
-- **Necesario**: Gestiona usuarios con roles (CLIENT, MECHANIC, ADMIN)
-- **Coincide con**: `UserEntity` de la app Android
+### Tests
+- ✅ Tests unitarios para servicios
+- ✅ Tests unitarios para controladores
+- ✅ Cobertura de casos de éxito y error
 
-### ✅ gestionsolicitudes
-- **Necesario**: Gestiona solicitudes de servicio
-- **Coincide con**: `RequestHistoryEntity` de la app Android
-- **Campos alineados**: serviceType, vehicleInfo, description, status, images, mechanicAssigned, etc.
+### Almacenamiento de Imágenes
+- ✅ Microservicio dedicado para imágenes
+- ✅ Almacenamiento dual (BD + sistema de archivos)
+- ✅ Soporte para multipart y Base64
 
-### ⚠️ notificaciones
-- **Opcional**: Para notificaciones push futuras
-- **Nota**: La app actualmente usa Snackbars locales, no notificaciones del servidor
+## Notas Importantes
 
-### ⚠️ media
-- **Opcional**: Para subida de imágenes al servidor
-- **Nota**: La app actualmente guarda imágenes localmente como string
-
-### ✅ vehiculos
-- **Necesario**: Gestiona vehículos de usuarios
-- **Coincide con**: `VehicleEntity` de la app Android
-- **Migrado a Retrofit**: La app Android ahora consume este microservicio
-
-Ver `ANALISIS_MICROSERVICIOS.md` para más detalles.
-Ver `INSTRUCCIONES_PRUEBA.md` para instrucciones detalladas de cómo iniciar y probar todo.
-
+- Las contraseñas ahora se almacenan encriptadas con BCrypt
+- Los roles están normalizados en una tabla separada
+- El servicio de imágenes almacena las fotos tanto en la BD como en el sistema de archivos
+- Todos los endpoints tienen documentación Swagger completa
+- Los tests usan Mockito para simular dependencias

@@ -18,6 +18,7 @@ public class UsuarioClient {
     }
 
     // Método para obtener un usuario por id
+    @SuppressWarnings("unchecked")
     public Map<String, Object> obtenerUsuarioPorId(Long id) {
         return this.webClient.get()
                 .uri("/{id}", id)
